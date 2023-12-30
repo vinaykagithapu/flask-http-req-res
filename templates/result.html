@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Result</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .headers-table {
+            width: 100%;
+        }
+
+        .headers-table th, .headers-table td {
+            padding: 8px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Request Result</h1>
+    <p>URL: {{ url }}</p>
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Status Code</td>
+            <td class="{% if response.status_code >= 400 %}error{% endif %}">{{ response.status_code }}</td>
+        </tr>
+        {% if response.status_code < 400 %}
+            <tr>
+                <td>Headers</td>
+                <td>
+                    <table class="headers-table">
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        {% for key, value in response.headers.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+    <a href="/">Go Back</a>
+</body>
+</html>

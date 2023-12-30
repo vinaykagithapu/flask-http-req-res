@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-req-res-app
+spec:
+  selector:
+    matchLabels:
+      app: flask-req-res-app
+  template:
+    metadata:
+      labels:
+        app: flask-req-res-app
+    spec:
+      containers:
+      - name: flask-req-res-app
+        image: cyberwarrior423/flask-req-res-app:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000

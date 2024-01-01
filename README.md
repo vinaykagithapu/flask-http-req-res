@@ -31,6 +31,7 @@ docker rmi cyberwarrior423/flask-req-res-app:latest
 ```
 
 ## Run on Kubernetes
+### Using Kubernetes Manifest Files
 1. Create a namespace
 ```shell
 kubectl create namespace app-ns
@@ -50,5 +51,30 @@ kubectl -n app-ns port-forward service/flask-req-res-app 5000:80
 ```shell
 kubectl -n app-ns delete -f kubernetes/service.yaml
 kubectl -n app-ns delete -f kubernetes/deployment.yaml
+kubectl delete namespace app-ns
+```
+### Using Helm Chart
+1. Check the lint
+```shell
+helm lint charts/flask-http-req-res
+```
+2. Verify the template
+```shell
+helm template app-1 charts/flask-http-req-res
+```
+3. Deploy `app-1` release in `app-ns` namespace with default values
+```shell
+helm upgrade --install app-1 charts/flask-http-req-res \
+    -n app-ns --create-namespace \
+    --wait
+```
+4. Port-forward the service
+```shell
+kubectl -n app-ns port-forward service/app-1-flask-http-req-res 5000:5000
+```
+5. Access the app at http://localhost:5000
+6. Uninstall `app-1` helm release
+```shell
+helm uninstall app-1 -n app-ns
 kubectl delete namespace app-ns
 ```

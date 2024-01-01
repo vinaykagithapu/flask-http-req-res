@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "flask-http-req-res.fullname" . }}-test-connection"
+  labels:
+    {{- include "flask-http-req-res.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "flask-http-req-res.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
